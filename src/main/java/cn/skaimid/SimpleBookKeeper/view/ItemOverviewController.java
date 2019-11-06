@@ -3,12 +3,13 @@ package cn.skaimid.SimpleBookKeeper.view;
 import cn.skaimid.SimpleBookKeeper.MainApp;
 import cn.skaimid.SimpleBookKeeper.model.Account;
 import cn.skaimid.SimpleBookKeeper.util.DateUtil;
+import cn.skaimid.SimpleBookKeeper.util.SqlUtil;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import org.controlsfx.dialog.ProgressDialog;
 
 public class ItemOverviewController {
     @FXML
@@ -32,6 +33,8 @@ public class ItemOverviewController {
 
     @FXML
     private Label descriptionLabel;
+    // total money
+    private double sum = 0;
 
     // Reference to the main application.
     private MainApp mainApp;
@@ -44,6 +47,7 @@ public class ItemOverviewController {
     }
 
 
+
     @FXML
     public void initialize() {
         // Initialize the table with the two columns.
@@ -52,12 +56,7 @@ public class ItemOverviewController {
 
         // Clear Item detail
         showItemDetail(null);
-        sumLabel.setText("");
-        //TODO calculate sum
-        // need a database!!!
-
         accountTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showItemDetail(newValue));
-
     }
 
 
@@ -71,7 +70,16 @@ public class ItemOverviewController {
 
         // Add observable list data to the table
         accountTable.setItems(mainApp.getAccountData());
+
+        // calculate sum
+
+        ObservableList<Account> accountData = this.mainApp.getAccountData();
+        for (Account currentAccount : accountData) {
+            sum += currentAccount.getMoney();
+        }
+        sumLabel.setText(String.valueOf(sum));
     }
+
 
     private void showItemDetail(Account account) {
         if (account != null) {
@@ -97,7 +105,11 @@ public class ItemOverviewController {
     private void handleDeleteItem() {
         int selectedIndex = accountTable.getSelectionModel().getSelectedIndex();
         if (selectedIndex >= 0) {
+            int id = accountTable.getSelectionModel().selectedItemProperty().getValue().getId();
+            SqlUtil.handleDelete(id);
+            sum -= accountTable.getSelectionModel().selectedItemProperty().getValue().getMoney();
             accountTable.getItems().remove(selectedIndex);
+            sumLabel.setText(String.valueOf(sum));
         } else {
             // Nothing selected.
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -118,7 +130,11 @@ public class ItemOverviewController {
         Account tempaccount = new Account();
         boolean okClicked = mainApp.showItemEditDialog(tempaccount);
         if (okClicked) {
+            SqlUtil.handleAdd(tempaccount);
+            tempaccount.setId(SqlUtil.getLastId());
             mainApp.getAccountData().add(tempaccount);
+            sum += tempaccount.getMoney();
+            sumLabel.setText(String.valueOf(sum));
         }
     }
 
@@ -130,9 +146,16 @@ public class ItemOverviewController {
     private void handleEditItem() {
         Account selectedAccount = accountTable.getSelectionModel().getSelectedItem();
         if (selectedAccount != null) {
+            int tempId = selectedAccount.getId();
+            double tempMoney = selectedAccount.getMoney();
             boolean okClicked = mainApp.showItemEditDialog(selectedAccount);
             if (okClicked) {
                 showItemDetail(selectedAccount);
+                sum = sum + selectedAccount.getMoney() - tempMoney;
+                sumLabel.setText(String.valueOf(sum));
+                SqlUtil.handleDelete(tempId);
+                SqlUtil.handleAdd(selectedAccount);
+                selectedAccount.setId(SqlUtil.getLastId());
             }
 
         } else {

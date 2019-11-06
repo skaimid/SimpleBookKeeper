@@ -12,17 +12,20 @@ import javafx.beans.property.*;
  * @author Skaimid
  */
 public class Account {
-    private final IntegerProperty money;
+
+    private final IntegerProperty id;
+    private final DoubleProperty money;
     private final ObjectProperty<LocalDate> date;
     private final StringProperty tag;
     private final StringProperty description;
 
     public Account() {
-        this(0);
+        this(0.0);
     }
 
-    public Account(Integer money) {
-        this.money = new SimpleIntegerProperty(money);
+    public Account(Double money) {
+        this.id = new SimpleIntegerProperty(0);
+        this.money = new SimpleDoubleProperty(money);
         this.date = new SimpleObjectProperty<LocalDate>(LocalDate.now());
         String tagDescribition = Tags.getTagNameByCode(0);
         this.tag = new SimpleStringProperty(tagDescribition);
@@ -37,9 +40,19 @@ public class Account {
      * @param tag
      * @param description
      */
-    public Account(Integer money, String date, Integer tag, String description) {
-        this.money = new SimpleIntegerProperty(money);
-        this.date = new SimpleObjectProperty<LocalDate>(DateUtil.parse(date));
+    // code below might not be used
+//    public Account(Integer id,Double money, String date, Integer tag, String description) {
+//        this.id = new SimpleIntegerProperty(id);
+//        this.money = new SimpleDoubleProperty(money);
+//        this.date = new SimpleObjectProperty<LocalDate>(DateUtil.parse(date));
+//        String tagDescribition = Tags.getTagNameByCode(tag);
+//        this.tag = new SimpleStringProperty(tagDescribition);
+//        this.description = new SimpleStringProperty(description);
+//    }
+    public Account(Integer id, Double money, LocalDate date, Integer tag, String description) {
+        this.id = new SimpleIntegerProperty(id);
+        this.money = new SimpleDoubleProperty(money);
+        this.date = new SimpleObjectProperty<LocalDate>(date);
         String tagDescribition = Tags.getTagNameByCode(tag);
         this.tag = new SimpleStringProperty(tagDescribition);
         this.description = new SimpleStringProperty(description);
@@ -47,15 +60,28 @@ public class Account {
 
     //getter and setter
 
-    public int getMoney() {
+
+    public int getId() {
+        return id.get();
+    }
+
+    public IntegerProperty idProperty() {
+        return id;
+    }
+
+    public double getMoney() {
         return money.get();
     }
 
-    public IntegerProperty moneyProperty() {
+    public void setId(int id) {
+        this.id.set(id);
+    }
+
+    public DoubleProperty moneyProperty() {
         return money;
     }
 
-    public void setMoney(int money) {
+    public void setMoney(double money) {
         this.money.set(money);
     }
 

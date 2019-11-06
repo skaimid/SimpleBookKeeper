@@ -59,4 +59,13 @@ public enum Tags {
             return "ÆäËû";
         }
     }
+
+    public static Integer getCodeByTagName(String tag) {
+        for (int i = 0; i <= 10; i++) {
+            if (getTagNameByCode(i).equals(tag)) {
+                return i;
+            }
+        }
+        return 0;
+    }
 }

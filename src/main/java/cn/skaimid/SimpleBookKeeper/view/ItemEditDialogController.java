@@ -77,7 +77,7 @@ public class ItemEditDialogController {
     @FXML
     private void handleOk() {
         if (isInputValid()) {
-            account.setMoney(Integer.parseInt(moneyField.getText()));
+            account.setMoney(Double.parseDouble(moneyField.getText()));
             account.setDate(datePicker.getValue());
             account.setTag(tagChoiceField.getValue());
             account.setDescription(descriptionField.getText());
@@ -103,10 +103,6 @@ public class ItemEditDialogController {
      */
     private boolean isInputValid() {
         String errorMsg = "";
-
-        if (moneyField.getText() == null || moneyField.getText().length() == 0) {
-            errorMsg += "No valid money";
-        }
 
         if (moneyField.getText() == null || moneyField.getText().length() == 0) {
             errorMsg += "No valid money";
