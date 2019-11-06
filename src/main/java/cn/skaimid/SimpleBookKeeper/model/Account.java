@@ -17,6 +17,17 @@ public class Account {
     private final StringProperty tag;
     private final StringProperty description;
 
+    public Account() {
+        this(0);
+    }
+
+    public Account(Integer money) {
+        this.money = new SimpleIntegerProperty(money);
+        this.date = new SimpleObjectProperty<LocalDate>(LocalDate.now());
+        String tagDescribition = Tags.getTagNameByCode(0);
+        this.tag = new SimpleStringProperty(tagDescribition);
+        this.description = new SimpleStringProperty("No description was given.");
+    }
 
     /**
      * Constructor with some initial data.
@@ -70,6 +81,10 @@ public class Account {
 
     public void setTag(Integer tag) {
         this.tag.set(Tags.getTagNameByCode(tag));
+    }
+
+    public void setTag(String tag) {
+        this.tag.set(tag);
     }
 
     public String getDescription() {

@@ -88,8 +88,10 @@
                         <HBox layoutX="572.0" layoutY="649.0" spacing="5.0" AnchorPane.bottomAnchor="40.0"
                               AnchorPane.rightAnchor="50.0">
                             <children>
-                                <Button layoutX="572.0" layoutY="649.0" mnemonicParsing="false" text="增加.."/>
-                                <Button layoutX="668.0" layoutY="649.0" mnemonicParsing="false" text="修改.."/>
+                                <Button layoutX="572.0" layoutY="649.0" mnemonicParsing="false"
+                                        onAction="#handleNewItem" text="增加.."/>
+                                <Button layoutX="668.0" layoutY="649.0" mnemonicParsing="false"
+                                        onAction="#handleEditItem" text="修改.."/>
                                 <Button layoutX="763.0" layoutY="649.0" mnemonicParsing="false"
                                         onAction="#handleDeleteItem" text="删除.."/>
                             </children>

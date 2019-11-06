@@ -108,4 +108,42 @@ public class ItemOverviewController {
             alert.showAndWait();
         }
     }
+
+    /**
+     * Called when the user clicks the new button. Opens a dialog to edit
+     * details for a new person.
+     */
+    @FXML
+    private void handleNewItem() {
+        Account tempaccount = new Account();
+        boolean okClicked = mainApp.showItemEditDialog(tempaccount);
+        if (okClicked) {
+            mainApp.getAccountData().add(tempaccount);
+        }
+    }
+
+    /**
+     * Called when the user clicks the edit button. Opens a dialog to edit
+     * details for the selected person.
+     */
+    @FXML
+    private void handleEditItem() {
+        Account selectedAccount = accountTable.getSelectionModel().getSelectedItem();
+        if (selectedAccount != null) {
+            boolean okClicked = mainApp.showItemEditDialog(selectedAccount);
+            if (okClicked) {
+                showItemDetail(selectedAccount);
+            }
+
+        } else {
+            // Nothing selected.
+            // Nothing selected.
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText("Look, an Information Dialog");
+            alert.setContentText("I have a great message for you!");
+
+            alert.showAndWait();
+        }
+    }
 }
