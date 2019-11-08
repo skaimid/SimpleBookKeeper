@@ -14,6 +14,7 @@ import javafx.scene.control.TableView;
 public class ItemOverviewController {
     @FXML
     private TableView<Account> accountTable;
+
     @FXML
     private TableColumn<Account, String> tagColumn;
     @FXML
@@ -47,13 +48,11 @@ public class ItemOverviewController {
     }
 
 
-
     @FXML
     public void initialize() {
         // Initialize the table with the two columns.
         tagColumn.setCellValueFactory(cellData -> cellData.getValue().tagProperty());
         moneyColumn.setCellValueFactory(cellData -> cellData.getValue().moneyProperty().asString());
-
         // Clear Item detail
         showItemDetail(null);
         accountTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showItemDetail(newValue));
@@ -78,6 +77,8 @@ public class ItemOverviewController {
             sum += currentAccount.getMoney();
         }
         sumLabel.setText(String.valueOf(sum));
+        accountTable.getSelectionModel().select(0);
+
     }
 
 

@@ -56,7 +56,11 @@ public class ItemEditDialogController {
                         tagOptions.add(Tags.getTagNameByCode(i));
                     }
                     tagChoiceField.setItems(tagOptions);
-                    tagChoiceField.setValue(account.getTag());
+                    if (account.getTag().equals("收入")) {
+                        tagChoiceField.setValue("其他");
+                    } else {
+                        tagChoiceField.setValue(account.getTag());
+                    }
                 }
             }
         });
