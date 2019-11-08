@@ -7,6 +7,7 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 
 public enum Tags {
+    ADD(-1, "收入"),
     OTHERS(0, "其他"),
     FOOD(1, "餐饮美食"),
     CLOTHING_AND_BEAUTY(2, "服饰美容"),
@@ -61,7 +62,7 @@ public enum Tags {
     }
 
     public static Integer getCodeByTagName(String tag) {
-        for (int i = 0; i <= 10; i++) {
+        for (int i = -1; i <= 10; i++) {
             if (getTagNameByCode(i).equals(tag)) {
                 return i;
             }

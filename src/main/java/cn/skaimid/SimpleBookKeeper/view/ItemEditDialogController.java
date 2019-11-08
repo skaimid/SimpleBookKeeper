@@ -2,7 +2,8 @@ package cn.skaimid.SimpleBookKeeper.view;
 
 import cn.skaimid.SimpleBookKeeper.model.Account;
 import cn.skaimid.SimpleBookKeeper.model.Tags;
-import com.sun.tools.javac.tree.JCTree;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,6 +11,10 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 public class ItemEditDialogController {
+    @FXML
+    private ChoiceBox<String> sideChoiceField;
+
+
     @FXML
     private TextField moneyField;
 
@@ -32,11 +37,29 @@ public class ItemEditDialogController {
      */
     @FXML
     private void initialize() {
-        ObservableList<String> options = FXCollections.observableArrayList();
-        for (int i = 0; i <= 10; i++) {
-            options.add(Tags.getTagNameByCode(i));
-        }
-        tagChoiceField.setItems(options);
+        ObservableList<String> sideOption = FXCollections.observableArrayList();
+        sideOption.add("收入");
+        sideOption.add("支出");
+        sideChoiceField.setItems(sideOption);
+
+        sideChoiceField.valueProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (newValue.equals("收入")) {
+                    ObservableList<String> tagOptions = FXCollections.observableArrayList();
+                    tagOptions.add("收入");
+                    tagChoiceField.setItems(tagOptions);
+                } else {
+                    ObservableList<String> tagOptions = FXCollections.observableArrayList();
+                    for (int i = 0; i <= 10; i++) {
+                        tagOptions.add(Tags.getTagNameByCode(i));
+                    }
+                    tagChoiceField.setItems(tagOptions);
+                }
+            }
+        });
+
+
     }
 
     /**
@@ -55,6 +78,13 @@ public class ItemEditDialogController {
      */
     public void setAccount(Account account) {
         this.account = account;
+        if (account.getMoney() < 0) {
+            sideChoiceField.setValue("支出");
+            moneyField.setText(String.valueOf(account.getMoney()));
+        } else {
+            sideChoiceField.setValue("收入");
+            moneyField.setText(String.valueOf(account.getMoney()));
+        }
         moneyField.setText(String.valueOf(account.getMoney()));
         descriptionField.setText(account.getDescription());
         tagChoiceField.setValue(account.getTag());
@@ -77,11 +107,17 @@ public class ItemEditDialogController {
     @FXML
     private void handleOk() {
         if (isInputValid()) {
-            account.setMoney(Double.parseDouble(moneyField.getText()));
-            account.setDate(datePicker.getValue());
-            account.setTag(tagChoiceField.getValue());
-            account.setDescription(descriptionField.getText());
+            if (sideChoiceField.getValue().equals("收入")) {
+                account.setMoney(Math.abs(Double.parseDouble(moneyField.getText())));
+                account.setTag("收入");
+            } else {
+                account.setMoney(-1 * Math.abs(Double.parseDouble(moneyField.getText())));
+                account.setTag(tagChoiceField.getValue());
+            }
 
+            account.setDate(datePicker.getValue());
+
+            account.setDescription(descriptionField.getText());
 
             okClicked = true;
             dialogStage.close();

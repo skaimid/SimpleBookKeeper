@@ -61,11 +61,13 @@
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                     <children>
                         <GridPane layoutX="109.0" layoutY="118.0" prefHeight="718.0" prefWidth="893.0"
-                                  AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="60.0"
-                                  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                                  AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="20.0"
+                                  AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="80.0">
                             <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="233.0" minWidth="10.0"
+                                                   prefWidth="137.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="339.0" minWidth="10.0"
+                                                   prefWidth="339.0"/>
                             </columnConstraints>
                             <rowConstraints>
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
@@ -74,18 +76,23 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                             <children>
-                                <Label text="金额"/>
-                                <Label text="时间" GridPane.rowIndex="1"/>
-                                <Label text="标签" GridPane.rowIndex="2"/>
-                                <Label text="描述" GridPane.rowIndex="3"/>
-                                <Label fx:id="moneyLabel" text="Label" GridPane.columnIndex="1"/>
-                                <Label fx:id="dateLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                                <Label fx:id="tagLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                                <Label fx:id="descriptionLabel" text="Label" GridPane.columnIndex="1"
-                                       GridPane.rowIndex="3"/>
+                                <Label alignment="CENTER" prefHeight="20.0" prefWidth="248.0" text="金额"/>
+                                <Label alignment="CENTER" prefHeight="20.0" prefWidth="248.0" text="时间"
+                                       GridPane.rowIndex="1"/>
+                                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="248.0"
+                                       text="标签" GridPane.rowIndex="2"/>
+                                <Label alignment="CENTER" prefWidth="248.0" text="描述" GridPane.rowIndex="3"/>
+                                <Label fx:id="moneyLabel" alignment="CENTER" prefHeight="20.0" prefWidth="356.0"
+                                       text="Label" GridPane.columnIndex="1"/>
+                                <Label fx:id="dateLabel" alignment="CENTER" prefHeight="20.0" prefWidth="348.0"
+                                       text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                <Label fx:id="tagLabel" alignment="CENTER" prefHeight="20.0" prefWidth="342.0"
+                                       text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                <Label fx:id="descriptionLabel" alignment="CENTER" prefHeight="58.0" prefWidth="339.0"
+                                       text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
                             </children>
                         </GridPane>
-                        <HBox layoutX="572.0" layoutY="649.0" spacing="5.0" AnchorPane.bottomAnchor="60.0"
+                        <HBox layoutX="572.0" layoutY="649.0" spacing="20.0" AnchorPane.bottomAnchor="60.0"
                               AnchorPane.rightAnchor="50.0">
                             <children>
                                 <Button layoutX="572.0" layoutY="649.0" mnemonicParsing="false"
