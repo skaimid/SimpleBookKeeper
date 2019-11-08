@@ -2,6 +2,7 @@ package cn.skaimid.SimpleBookKeeper;
 
 import cn.skaimid.SimpleBookKeeper.model.Account;
 import cn.skaimid.SimpleBookKeeper.util.SqlTimeUtil;
+import cn.skaimid.SimpleBookKeeper.util.SqlUtil;
 import cn.skaimid.SimpleBookKeeper.view.ItemEditDialogController;
 import cn.skaimid.SimpleBookKeeper.view.ItemOverviewController;
 import javafx.application.Application;
@@ -34,39 +35,8 @@ public class MainApp extends Application {
     private ObservableList<Account> accountData = FXCollections.observableArrayList();
 
     public MainApp() {
-        // connect to the database
-        Connection connection = null;
-        try {
-            // create a database connection
-            connection = DriverManager.getConnection("jdbc:sqlite:account.db");
-            Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);  // set timeout to 30 sec.
-
-            ResultSet rs = statement.executeQuery("select * from account");
-            while (rs.next()) {
-                accountData.add(new Account(
-                        rs.getInt("id"),
-                        rs.getDouble("money"), SqlTimeUtil.parse(rs.getString("time")),
-                        rs.getInt("tag"), rs.getString("description")));
-
-            }
-        } catch (SQLException e) {
-            // if the error message is "out of memory",
-            // it probably means no database file is found
-            System.err.println(e.getMessage());
-        } finally {
-            try {
-                if (connection != null)
-                    connection.close();
-            } catch (SQLException e) {
-                // connection close failed.
-                System.err.println(e.getMessage());
-            }
-        }
-
-
+        accountData = SqlUtil.handleSearch("select * from account");
     }
-
 
     public ObservableList<Account> getAccountData() {
         return accountData;

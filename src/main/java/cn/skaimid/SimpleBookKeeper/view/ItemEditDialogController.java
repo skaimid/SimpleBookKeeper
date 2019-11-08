@@ -38,8 +38,8 @@ public class ItemEditDialogController {
     @FXML
     private void initialize() {
         ObservableList<String> sideOption = FXCollections.observableArrayList();
-        sideOption.add("收入");
         sideOption.add("支出");
+        sideOption.add("收入");
         sideChoiceField.setItems(sideOption);
 
         sideChoiceField.valueProperty().addListener(new ChangeListener<String>() {
@@ -49,12 +49,14 @@ public class ItemEditDialogController {
                     ObservableList<String> tagOptions = FXCollections.observableArrayList();
                     tagOptions.add("收入");
                     tagChoiceField.setItems(tagOptions);
+                    tagChoiceField.setValue("收入");
                 } else {
                     ObservableList<String> tagOptions = FXCollections.observableArrayList();
                     for (int i = 0; i <= 10; i++) {
                         tagOptions.add(Tags.getTagNameByCode(i));
                     }
                     tagChoiceField.setItems(tagOptions);
+                    tagChoiceField.setValue(account.getTag());
                 }
             }
         });
@@ -87,7 +89,6 @@ public class ItemEditDialogController {
         }
         moneyField.setText(String.valueOf(account.getMoney()));
         descriptionField.setText(account.getDescription());
-        tagChoiceField.setValue(account.getTag());
         datePicker.setValue(account.getDate());
         datePicker.setPromptText("dd.mm.yyyy");
     }
