@@ -7,8 +7,8 @@ import cn.skaimid.SimpleBookKeeper.util.SqlUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -120,5 +120,10 @@ public class RootLayoutController {
                 "along with Simple BookKeeper.  If not, see <http://www.gnu.org/licenses/>.");
 
         alert.showAndWait();
+    }
+
+    @FXML
+    private void handleCategoryPieChart() {
+        mainApp.showCategoryPieChart();
     }
 }

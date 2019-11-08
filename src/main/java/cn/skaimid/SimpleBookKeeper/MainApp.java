@@ -2,6 +2,7 @@ package cn.skaimid.SimpleBookKeeper;
 
 import cn.skaimid.SimpleBookKeeper.model.Account;
 import cn.skaimid.SimpleBookKeeper.util.SqlUtil;
+import cn.skaimid.SimpleBookKeeper.view.CategoryPieChartController;
 import cn.skaimid.SimpleBookKeeper.view.ItemEditDialogController;
 import cn.skaimid.SimpleBookKeeper.view.ItemOverviewController;
 import cn.skaimid.SimpleBookKeeper.view.RootLayoutController;
@@ -47,6 +48,24 @@ public class MainApp extends Application {
     }
 
 
+    public void showCategoryPieChart() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/CategoryPieChart.fxml"));
+            AnchorPane page = loader.load();
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Category Statistics Pie Chart");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            dialogStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("1");
+        }
+    }
 
 
     /**
@@ -108,7 +127,7 @@ public class MainApp extends Application {
         }
     }
 
-    public void initRootLayout() {
+    private void initRootLayout() {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class
