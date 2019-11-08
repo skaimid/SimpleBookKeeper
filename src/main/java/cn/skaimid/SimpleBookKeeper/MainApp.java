@@ -1,13 +1,11 @@
 package cn.skaimid.SimpleBookKeeper;
 
 import cn.skaimid.SimpleBookKeeper.model.Account;
-import cn.skaimid.SimpleBookKeeper.util.SqlTimeUtil;
 import cn.skaimid.SimpleBookKeeper.util.SqlUtil;
 import cn.skaimid.SimpleBookKeeper.view.ItemEditDialogController;
 import cn.skaimid.SimpleBookKeeper.view.ItemOverviewController;
 import cn.skaimid.SimpleBookKeeper.view.RootLayoutController;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -16,11 +14,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.io.IOException;
 
 // a significant bug:
@@ -33,7 +26,7 @@ public class MainApp extends Application {
     /**
      * The data as an observable list of Account.
      */
-    private ObservableList<Account> accountData = FXCollections.observableArrayList();
+    private ObservableList<Account> accountData;
 
     public MainApp() {
         accountData = SqlUtil.handleSearch("select * from account");
@@ -64,7 +57,7 @@ public class MainApp extends Application {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/ItemOverview.fxml"));
-            AnchorPane itemOverview = (AnchorPane) loader.load();
+            AnchorPane itemOverview = loader.load();
 
             // Set person overview into the center of root layout.
             rootLayout.setCenter(itemOverview);
@@ -90,7 +83,7 @@ public class MainApp extends Application {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/ItemEditDialog.fxml"));
-            AnchorPane page = (AnchorPane) loader.load();
+            AnchorPane page = loader.load();
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
@@ -120,7 +113,7 @@ public class MainApp extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class
                     .getResource("view/RootLayout.fxml"));
-            rootLayout = (BorderPane) loader.load();
+            rootLayout = loader.load();
 
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);

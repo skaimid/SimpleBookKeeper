@@ -3,7 +3,6 @@ package cn.skaimid.SimpleBookKeeper.model;
 import javafx.beans.binding.StringBinding;
 
 import java.util.HashMap;
-import java.util.IdentityHashMap;
 import java.util.Map;
 
 public enum Tags {
@@ -32,7 +31,7 @@ public enum Tags {
         }
     }
 
-    private Tags(Integer code, String name) {
+    Tags(Integer code, String name) {
         this.code = code;
         this.name = name;
     }

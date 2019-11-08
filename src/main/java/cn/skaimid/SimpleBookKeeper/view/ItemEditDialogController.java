@@ -2,8 +2,6 @@ package cn.skaimid.SimpleBookKeeper.view;
 
 import cn.skaimid.SimpleBookKeeper.model.Account;
 import cn.skaimid.SimpleBookKeeper.model.Tags;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -42,25 +40,22 @@ public class ItemEditDialogController {
         sideOption.add("收入");
         sideChoiceField.setItems(sideOption);
 
-        sideChoiceField.valueProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (newValue.equals("收入")) {
-                    ObservableList<String> tagOptions = FXCollections.observableArrayList();
-                    tagOptions.add("收入");
-                    tagChoiceField.setItems(tagOptions);
-                    tagChoiceField.setValue("收入");
+        sideChoiceField.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.equals("收入")) {
+                ObservableList<String> tagOptions = FXCollections.observableArrayList();
+                tagOptions.add("收入");
+                tagChoiceField.setItems(tagOptions);
+                tagChoiceField.setValue("收入");
+            } else {
+                ObservableList<String> tagOptions = FXCollections.observableArrayList();
+                for (int i = 0; i <= 10; i++) {
+                    tagOptions.add(Tags.getTagNameByCode(i));
+                }
+                tagChoiceField.setItems(tagOptions);
+                if (account.getTag().equals("收入")) {
+                    tagChoiceField.setValue("其他");
                 } else {
-                    ObservableList<String> tagOptions = FXCollections.observableArrayList();
-                    for (int i = 0; i <= 10; i++) {
-                        tagOptions.add(Tags.getTagNameByCode(i));
-                    }
-                    tagChoiceField.setItems(tagOptions);
-                    if (account.getTag().equals("收入")) {
-                        tagChoiceField.setValue("其他");
-                    } else {
-                        tagChoiceField.setValue(account.getTag());
-                    }
+                    tagChoiceField.setValue(account.getTag());
                 }
             }
         });

@@ -3,7 +3,6 @@ package cn.skaimid.SimpleBookKeeper.model;
 
 import java.time.*;
 
-import cn.skaimid.SimpleBookKeeper.util.DateUtil;
 import javafx.beans.property.*;
 
 /**
@@ -26,7 +25,7 @@ public class Account {
     public Account(Double money) {
         this.id = new SimpleIntegerProperty(0);
         this.money = new SimpleDoubleProperty(money);
-        this.date = new SimpleObjectProperty<LocalDate>(LocalDate.now());
+        this.date = new SimpleObjectProperty<>(LocalDate.now());
         String tagDescribition = Tags.getTagNameByCode(0);
         this.tag = new SimpleStringProperty(tagDescribition);
         this.description = new SimpleStringProperty("No description was given.");
@@ -52,9 +51,9 @@ public class Account {
     public Account(Integer id, Double money, LocalDate date, Integer tag, String description) {
         this.id = new SimpleIntegerProperty(id);
         this.money = new SimpleDoubleProperty(money);
-        this.date = new SimpleObjectProperty<LocalDate>(date);
-        String tagDescribition = Tags.getTagNameByCode(tag);
-        this.tag = new SimpleStringProperty(tagDescribition);
+        this.date = new SimpleObjectProperty<>(date);
+        String tagDescription = Tags.getTagNameByCode(tag);
+        this.tag = new SimpleStringProperty(tagDescription);
         this.description = new SimpleStringProperty(description);
     }
 
