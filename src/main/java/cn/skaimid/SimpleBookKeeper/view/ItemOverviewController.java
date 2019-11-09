@@ -2,14 +2,14 @@ package cn.skaimid.SimpleBookKeeper.view;
 
 import cn.skaimid.SimpleBookKeeper.MainApp;
 import cn.skaimid.SimpleBookKeeper.model.Account;
-import cn.skaimid.SimpleBookKeeper.util.DateUtil;
+import cn.skaimid.SimpleBookKeeper.model.Tags;
 import cn.skaimid.SimpleBookKeeper.util.SqlUtil;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+
+import java.time.LocalDate;
 
 public class ItemOverviewController {
     @FXML
@@ -19,21 +19,29 @@ public class ItemOverviewController {
     private TableColumn<Account, String> tagColumn;
     @FXML
     private TableColumn<Account, String> moneyColumn;
+    @FXML
+    private TableColumn<Account, String> timeCollumn;
+    @FXML
+    private TableColumn<Account, String> descriptionCollumn;
 
     @FXML
     private Label sumLabel;
 
     @FXML
-    private Label moneyLabel;
+    private CheckBox filterCheckBox;
 
     @FXML
-    private Label dateLabel;
+    private DatePicker startDatePicker;
 
     @FXML
-    private Label tagLabel;
+    private DatePicker endDatePicker;
 
     @FXML
-    private Label descriptionLabel;
+    private ChoiceBox<String> categoryCheckBox;
+
+    @FXML
+    private Button filterConfirmButton;
+
     // total money
     private double sum = 0;
 
@@ -50,13 +58,43 @@ public class ItemOverviewController {
 
     @FXML
     public void initialize() {
+        filterConfirmButton.setDisable(true);
+        categoryCheckBox.setDisable(true);
+        endDatePicker.setDisable(true);
+        startDatePicker.setDisable(true);
+        ObservableList<String> tagOptions = FXCollections.observableArrayList();
+        tagOptions.add("全部");
+        for (int i = -1; i <= 10; i++) {
+            tagOptions.add(Tags.getTagNameByCode(i));
+        }
+        categoryCheckBox.setItems(tagOptions);
+        categoryCheckBox.setValue("全部");
+        startDatePicker.setValue(LocalDate.now());
+        endDatePicker.setValue(LocalDate.now());
         // Initialize the table with the two columns.
         tagColumn.setCellValueFactory(cellData -> cellData.getValue().tagProperty());
         moneyColumn.setCellValueFactory(cellData -> cellData.getValue().moneyProperty().asString());
+        timeCollumn.setCellValueFactory(cellDate -> cellDate.getValue().dateProperty().asString());
+        descriptionCollumn.setCellValueFactory(cellData -> cellData.getValue().descriptionProperty());
+        filterCheckBox.selectedProperty().addListener(((observable, oldValue, newValue) -> {
+            if (newValue) {
+                filterConfirmButton.setDisable(false);
+                categoryCheckBox.setDisable(false);
+                endDatePicker.setDisable(false);
+                startDatePicker.setDisable(false);
+
+            } else {
+                filterConfirmButton.setDisable(true);
+                categoryCheckBox.setDisable(true);
+                endDatePicker.setDisable(true);
+                startDatePicker.setDisable(true);
+            }
+        }));
         // Clear Item detail
-        showItemDetail(null);
-        accountTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showItemDetail(newValue));
+        //showItemDetail(null);
+        //accountTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showItemDetail(newValue));
     }
+
 
 
     /**
@@ -82,22 +120,34 @@ public class ItemOverviewController {
     }
 
 
-    private void showItemDetail(Account account) {
-        if (account != null) {
-            // Fill the label with data from account object
-            moneyLabel.setText(String.valueOf(account.getMoney()));
-            dateLabel.setText(DateUtil.format(account.getDate()));
-            tagLabel.setText(account.getTag());
-            descriptionLabel.setText(account.getDescription());
-        } else {
-            // not selected
-            moneyLabel.setText("");
-            dateLabel.setText("");
-            tagLabel.setText("");
-            descriptionLabel.setText("");
-        }
+//    private void showItemDetail(Account account) {
+//        if (account != null) {
+//            // Fill the label with data from account object
+//            moneyLabel.setText(String.valueOf(account.getMoney()));
+//            dateLabel.setText(DateUtil.format(account.getDate()));
+//            tagLabel.setText(account.getTag());
+//            descriptionLabel.setText(account.getDescription());
+//        } else {
+//            // not selected
+//            moneyLabel.setText("");
+//            dateLabel.setText("");
+//            tagLabel.setText("");
+//            descriptionLabel.setText("");
+//        }
+//    }
+
+    @FXML
+    private void handleFilter() {
+
+        // TODO 删除 main 内的 accountData 把与列表有关的数据全部放到 ItemOverviewController 里面
+        System.out.println("1");
     }
 
+
+    @FXML
+    private void handleCategoryPieChart() {
+        mainApp.showCategoryPieChart();
+    }
 
     /**
      * Called when the user clicks on the delete button.
@@ -151,7 +201,7 @@ public class ItemOverviewController {
             double tempMoney = selectedAccount.getMoney();
             boolean okClicked = mainApp.showItemEditDialog(selectedAccount);
             if (okClicked) {
-                showItemDetail(selectedAccount);
+                //showItemDetail(selectedAccount);
                 sum = sum + selectedAccount.getMoney() - tempMoney;
                 sumLabel.setText(String.valueOf(sum));
                 SqlUtil.handleDelete(tempId);
