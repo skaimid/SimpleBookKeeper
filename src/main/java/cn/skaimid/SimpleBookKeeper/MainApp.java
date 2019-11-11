@@ -35,13 +35,7 @@ public class MainApp extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("简单记账");
 
-
         initRootLayout();
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("注意");
-        alert.setHeaderText("加载中");
-        alert.setContentText("耐心等待~");
-        alert.showAndWait();
 
         showItemOverview();
 

@@ -5,11 +5,13 @@ import cn.skaimid.SimpleBookKeeper.model.Account;
 import cn.skaimid.SimpleBookKeeper.model.Tags;
 import cn.skaimid.SimpleBookKeeper.util.SqlTimeUtil;
 import cn.skaimid.SimpleBookKeeper.util.SqlUtil;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 
 
@@ -46,9 +48,6 @@ public class ItemOverviewController {
     @FXML
     private Button filterConfirmButton;
 
-    // total money
-    private double sum = 0;
-
     // Reference to the main application.
     private MainApp mainApp;
 
@@ -66,10 +65,18 @@ public class ItemOverviewController {
         startDatePicker.setDisable(isDisable);
     }
 
+    private Alert initialAlert;
 
     @FXML
     public void initialize() {
-        accountData = SqlUtil.handleSearch("select * from account");
+        // set Table
+        initialAlert = new Alert(Alert.AlertType.INFORMATION);
+        initialAlert.setTitle("加载中");
+        initialAlert.setHeaderText("加载中...");
+        initialAlert.setContentText("请耐心等待...");
+
+        initialAlert.show();
+
 
         // set filter value
         disableFilter(true);
@@ -89,8 +96,7 @@ public class ItemOverviewController {
         }));
 
 
-        // set Table
-        setTableAndSum();
+        handleFilter();
         accountTable.getSelectionModel().select(0);
 
         accountTable.setOnMouseClicked(event -> {
@@ -101,24 +107,36 @@ public class ItemOverviewController {
         // Clear Item detail
         //showItemDetail(null);
         //accountTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showItemDetail(newValue));
+
     }
 
 
     // Is called by the main application to give a reference back to itself.
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Platform.runLater(() -> initialAlert.close());
+        });
+        thread.start();
     }
 
     private void setTableAndSum() {
         // Add observable list data to the table
         accountTable.setItems(accountData);
         // calculate sum
-        sum = 0;
-        ObservableList<Account> tempAccountData = accountData;
-        for (Account currentAccount : tempAccountData) {
+        // total money
+        double sum = 0.0;
+        for (Account currentAccount :
+                accountData) {
             sum += currentAccount.getMoney();
+
         }
-        sumLabel.setText(String.valueOf(sum));
+        sumLabel.setText(new DecimalFormat("0.00").format(sum));
     }
 
 
@@ -140,16 +158,19 @@ public class ItemOverviewController {
 
     @FXML
     private void handleFilter() {
-
-        if (categoryCheckBox.getValue().equals("全部")) {
-            accountData = SqlUtil.handleSearch("select * from account " +
-                    "where time >= '" + SqlTimeUtil.formate(startDatePicker.getValue()) + "'" +
-                    "and time <= '" + SqlTimeUtil.formate(endDatePicker.getValue()) + "' ");
+        if (filterCheckBox.isSelected()) {
+            if (categoryCheckBox.getValue().equals("全部")) {
+                accountData = SqlUtil.handleSearch("select * from account " +
+                        "where time >= '" + SqlTimeUtil.formate(startDatePicker.getValue()) + "'" +
+                        "and time <= '" + SqlTimeUtil.formate(endDatePicker.getValue()) + "' order by time asc");
+            } else {
+                accountData = SqlUtil.handleSearch("select * from account " +
+                        "where time >= '" + SqlTimeUtil.formate(startDatePicker.getValue()) + "'" +
+                        "and time <= '" + SqlTimeUtil.formate(endDatePicker.getValue()) + "' " +
+                        "and tag == '" + Tags.getCodeByTagName(categoryCheckBox.getValue()) + "' order by time asc");
+            }
         } else {
-            accountData = SqlUtil.handleSearch("select * from account " +
-                    "where time >= '" + SqlTimeUtil.formate(startDatePicker.getValue()) + "'" +
-                    "and time <= '" + SqlTimeUtil.formate(endDatePicker.getValue()) + "' " +
-                    "and tag == '" + Tags.getCodeByTagName(categoryCheckBox.getValue()) + "'");
+            accountData = SqlUtil.handleSearch("select * from account order by time asc");
         }
         setTableAndSum();
 
@@ -200,8 +221,7 @@ public class ItemOverviewController {
         if (selectedIndex >= 0) {
             int id = accountTable.getSelectionModel().selectedItemProperty().getValue().getId();
             SqlUtil.handleDelete(id);
-            sum -= accountTable.getSelectionModel().selectedItemProperty().getValue().getMoney();
-            setTableAndSum();
+            handleFilter();
         } else {
             // Nothing selected.
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -224,7 +244,7 @@ public class ItemOverviewController {
         if (okClicked) {
             SqlUtil.handleAdd(tempAccount);
             tempAccount.setId(SqlUtil.getLastId());
-            setTableAndSum();
+            handleFilter();
         }
     }
 
@@ -244,7 +264,6 @@ public class ItemOverviewController {
                 SqlUtil.handleAdd(selectedAccount);
                 selectedAccount.setId(SqlUtil.getLastId());
                 handleFilter();
-                setTableAndSum();
             }
 
         } else {

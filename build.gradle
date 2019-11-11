@@ -40,4 +40,4 @@ javafx {
 
 mainClassName = 'cn.skaimid.SimpleBookKeeper.MainApp'
 
-buildScan { termsOfServiceUrl = "https://gradle.com/terms-of-service"; termsOfServiceAgree = "yes" }
+//buildScan { termsOfServiceUrl = "https://gradle.com/terms-of-service"; termsOfServiceAgree = "yes" }
