@@ -58,7 +58,7 @@
                                                 <Button fx:id="filterConfirmButton" layoutX="95.0" layoutY="25.0"
                                                         mnemonicParsing="false" onAction="#handleFilter" text="确定..."/>
                                                 <Button layoutX="215.0" layoutY="25.0" mnemonicParsing="false"
-                                                        text="取消..."/>
+                                                        onAction="#handleReset" text="重置..."/>
                                             </children>
                                         </HBox>
                                         <Label layoutX="14.0" layoutY="65.0" text="统计与分析：" AnchorPane.leftAnchor="10.0"

@@ -3,6 +3,7 @@ package cn.skaimid.SimpleBookKeeper.view;
 import cn.skaimid.SimpleBookKeeper.MainApp;
 import cn.skaimid.SimpleBookKeeper.model.Account;
 import cn.skaimid.SimpleBookKeeper.model.Tags;
+import cn.skaimid.SimpleBookKeeper.util.SqlTimeUtil;
 import cn.skaimid.SimpleBookKeeper.util.SqlUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,7 +12,10 @@ import javafx.scene.control.*;
 
 import java.time.LocalDate;
 
+
 public class ItemOverviewController {
+    private ObservableList<Account> accountData;
+
     @FXML
     private TableView<Account> accountTable;
 
@@ -55,22 +59,21 @@ public class ItemOverviewController {
     public ItemOverviewController() {
     }
 
+    private void disableFilter(boolean isDisable) {
+        filterConfirmButton.setDisable(isDisable);
+        categoryCheckBox.setDisable(isDisable);
+        endDatePicker.setDisable(isDisable);
+        startDatePicker.setDisable(isDisable);
+    }
+
 
     @FXML
     public void initialize() {
-        filterConfirmButton.setDisable(true);
-        categoryCheckBox.setDisable(true);
-        endDatePicker.setDisable(true);
-        startDatePicker.setDisable(true);
-        ObservableList<String> tagOptions = FXCollections.observableArrayList();
-        tagOptions.add("全部");
-        for (int i = -1; i <= 10; i++) {
-            tagOptions.add(Tags.getTagNameByCode(i));
-        }
-        categoryCheckBox.setItems(tagOptions);
-        categoryCheckBox.setValue("全部");
-        startDatePicker.setValue(LocalDate.now());
-        endDatePicker.setValue(LocalDate.now());
+        accountData = SqlUtil.handleSearch("select * from account");
+
+        // set filter value
+        disableFilter(true);
+        initializeFilter();
         // Initialize the table with the two columns.
         tagColumn.setCellValueFactory(cellData -> cellData.getValue().tagProperty());
         moneyColumn.setCellValueFactory(cellData -> cellData.getValue().moneyProperty().asString());
@@ -78,18 +81,23 @@ public class ItemOverviewController {
         descriptionCollumn.setCellValueFactory(cellData -> cellData.getValue().descriptionProperty());
         filterCheckBox.selectedProperty().addListener(((observable, oldValue, newValue) -> {
             if (newValue) {
-                filterConfirmButton.setDisable(false);
-                categoryCheckBox.setDisable(false);
-                endDatePicker.setDisable(false);
-                startDatePicker.setDisable(false);
+                disableFilter(false);
 
             } else {
-                filterConfirmButton.setDisable(true);
-                categoryCheckBox.setDisable(true);
-                endDatePicker.setDisable(true);
-                startDatePicker.setDisable(true);
+                disableFilter(true);
             }
         }));
+
+
+        // set Table
+        setTableAndSum();
+        accountTable.getSelectionModel().select(0);
+
+        accountTable.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2 && accountTable.getSelectionModel() != null) {
+                handleSeeDetail();
+            }
+        });
         // Clear Item detail
         //showItemDetail(null);
         //accountTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showItemDetail(newValue));
@@ -102,21 +110,23 @@ public class ItemOverviewController {
      *
      * @param mainApp
      */
+
+    // TODO func below need to be cleaned
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
 
+    }
+
+    private void setTableAndSum() {
         // Add observable list data to the table
-        accountTable.setItems(mainApp.getAccountData());
-
+        accountTable.setItems(accountData);
         // calculate sum
-
-        ObservableList<Account> accountData = this.mainApp.getAccountData();
-        for (Account currentAccount : accountData) {
+        sum = 0;
+        ObservableList<Account> tempAccountData = accountData;
+        for (Account currentAccount : tempAccountData) {
             sum += currentAccount.getMoney();
         }
         sumLabel.setText(String.valueOf(sum));
-        accountTable.getSelectionModel().select(0);
-
     }
 
 
@@ -139,8 +149,43 @@ public class ItemOverviewController {
     @FXML
     private void handleFilter() {
 
-        // TODO 删除 main 内的 accountData 把与列表有关的数据全部放到 ItemOverviewController 里面
-        System.out.println("1");
+        if (categoryCheckBox.getValue().equals("全部")) {
+            accountData = SqlUtil.handleSearch("select * from account " +
+                    "where time >= '" + SqlTimeUtil.formate(startDatePicker.getValue()) + "'" +
+                    "and time <= '" + SqlTimeUtil.formate(endDatePicker.getValue()) + "' ");
+        } else {
+            accountData = SqlUtil.handleSearch("select * from account " +
+                    "where time >= '" + SqlTimeUtil.formate(startDatePicker.getValue()) + "'" +
+                    "and time <= '" + SqlTimeUtil.formate(endDatePicker.getValue()) + "' " +
+                    "and tag == '" + Tags.getCodeByTagName(categoryCheckBox.getValue()) + "'");
+        }
+        setTableAndSum();
+
+    }
+
+    @FXML
+    private void handleReset() {
+        filterCheckBox.setSelected(false);
+        initializeFilter();
+        accountData = SqlUtil.handleSearch("select * from account");
+        setTableAndSum();
+    }
+
+    private void initializeFilter() {
+        ObservableList<String> tagOptions = FXCollections.observableArrayList();
+        tagOptions.add("全部");
+        for (int i = -1; i <= 10; i++) {
+            tagOptions.add(Tags.getTagNameByCode(i));
+        }
+        categoryCheckBox.setItems(tagOptions);
+        categoryCheckBox.setValue("全部");
+        startDatePicker.setValue(LocalDate.now());
+        endDatePicker.setValue(LocalDate.now());
+    }
+
+    @FXML
+    private void handleSeeDetail() {
+        System.out.println("233");
     }
 
 
@@ -159,8 +204,7 @@ public class ItemOverviewController {
             int id = accountTable.getSelectionModel().selectedItemProperty().getValue().getId();
             SqlUtil.handleDelete(id);
             sum -= accountTable.getSelectionModel().selectedItemProperty().getValue().getMoney();
-            accountTable.getItems().remove(selectedIndex);
-            sumLabel.setText(String.valueOf(sum));
+            setTableAndSum();
         } else {
             // Nothing selected.
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -183,9 +227,7 @@ public class ItemOverviewController {
         if (okClicked) {
             SqlUtil.handleAdd(tempaccount);
             tempaccount.setId(SqlUtil.getLastId());
-            mainApp.getAccountData().add(tempaccount);
-            sum += tempaccount.getMoney();
-            sumLabel.setText(String.valueOf(sum));
+            setTableAndSum();
         }
     }
 
@@ -198,15 +240,14 @@ public class ItemOverviewController {
         Account selectedAccount = accountTable.getSelectionModel().getSelectedItem();
         if (selectedAccount != null) {
             int tempId = selectedAccount.getId();
-            double tempMoney = selectedAccount.getMoney();
             boolean okClicked = mainApp.showItemEditDialog(selectedAccount);
             if (okClicked) {
                 //showItemDetail(selectedAccount);
-                sum = sum + selectedAccount.getMoney() - tempMoney;
-                sumLabel.setText(String.valueOf(sum));
                 SqlUtil.handleDelete(tempId);
                 SqlUtil.handleAdd(selectedAccount);
                 selectedAccount.setId(SqlUtil.getLastId());
+                handleFilter();
+                setTableAndSum();
             }
 
         } else {

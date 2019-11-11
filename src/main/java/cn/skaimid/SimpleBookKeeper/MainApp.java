@@ -27,15 +27,11 @@ public class MainApp extends Application {
     /**
      * The data as an observable list of Account.
      */
-    private ObservableList<Account> accountData;
 
     public MainApp() {
-        accountData = SqlUtil.handleSearch("select * from account");
+
     }
 
-    public ObservableList<Account> getAccountData() {
-        return accountData;
-    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -59,11 +55,9 @@ public class MainApp extends Application {
             dialogStage.initOwner(primaryStage);
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
-
             dialogStage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("1");
         }
     }
 
