@@ -79,8 +79,9 @@
                                                 <Label text="收入与支出统计：" GridPane.rowIndex="1"/>
                                                 <Button mnemonicParsing="false" onAction="#handleCategoryPieChart"
                                                         text="查看..." GridPane.columnIndex="1"/>
-                                                <Button mnemonicParsing="false" text="查看..." GridPane.columnIndex="1"
-                                                        GridPane.rowIndex="1"/>
+                                                <Button mnemonicParsing="false"
+                                                        onAction="#handleIncomeAndExpenditureChart" text="查看..."
+                                                        GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                                             </children>
                                         </GridPane>
                                     </children>
@@ -103,9 +104,9 @@
                                                    AnchorPane.topAnchor="0.0">
                                             <columns>
                                                 <TableColumn fx:id="moneyColumn" prefWidth="200.0" text="金额"/>
-                                                <TableColumn fx:id="timeCollumn" prefWidth="150.0" text="日期"/>
+                                                <TableColumn fx:id="timeColumn" prefWidth="150.0" text="日期"/>
                                                 <TableColumn fx:id="tagColumn" prefWidth="150.0" text="标签"/>
-                                                <TableColumn fx:id="descriptionCollumn" prefWidth="450.0" text="描述"/>
+                                                <TableColumn fx:id="descriptionColumn" prefWidth="450.0" text="描述"/>
                                             </columns>
                                         </TableView>
                                     </children>
@@ -115,7 +116,6 @@
                                         <HBox layoutX="695.0" layoutY="19.0" spacing="30.0"
                                               AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
                                             <children>
-                                                <Button mnemonicParsing="false" text="检视..."/>
                                                 <Button layoutX="702.0" layoutY="14.0" mnemonicParsing="false"
                                                         onAction="#handleNewItem" text="新建..."/>
                                                 <Button layoutX="788.0" layoutY="14.0" mnemonicParsing="false"

@@ -10,6 +10,7 @@ import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
@@ -24,23 +25,27 @@ public class MainApp extends Application {
     private Stage primaryStage;
     private BorderPane rootLayout;
 
-    /**
-     * The data as an observable list of Account.
-     */
-
     public MainApp() {
 
     }
 
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("BookKeeperApp");
+        this.primaryStage.setTitle("简单记账");
+
 
         initRootLayout();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("注意");
+        alert.setHeaderText("加载中");
+        alert.setContentText("耐心等待~");
+        alert.showAndWait();
 
         showItemOverview();
+
+
     }
 
 
@@ -50,7 +55,7 @@ public class MainApp extends Application {
             loader.setLocation(MainApp.class.getResource("view/CategoryPieChart.fxml"));
             AnchorPane page = loader.load();
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Category Statistics Pie Chart");
+            dialogStage.setTitle("支出分类饼图");
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(primaryStage);
             Scene scene = new Scene(page);
@@ -61,18 +66,35 @@ public class MainApp extends Application {
         }
     }
 
+    public void showIncomeAndExpenditureChart() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/IncomeAndExpenditureChart.fxml"));
+            AnchorPane page = loader.load();
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("收支分析饼图");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+            dialogStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     /**
      * Shows the every item overview inside the root layout.
      */
     private void showItemOverview() {
         try {
-            // Load person overview.
+            // Load Item overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/ItemOverview.fxml"));
             AnchorPane itemOverview = loader.load();
 
-            // Set person overview into the center of root layout.
+            // Set Item overview into the center of root layout.
             rootLayout.setCenter(itemOverview);
 
             // Give the controller access to the main app.
@@ -83,14 +105,7 @@ public class MainApp extends Application {
         }
     }
 
-    /**
-     * Opens a dialog to edit details for the specified person. If the user
-     * clicks OK, the changes are saved into the provided person object and true
-     * is returned.
-     *
-     * @param account the person object to be edited
-     * @return true if the user clicked OK, false otherwise.
-     */
+
     public boolean showItemEditDialog(Account account) {
         try {
             // Load the fxml file and create a new stage for the popup dialog.
@@ -100,13 +115,13 @@ public class MainApp extends Application {
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Edit Person");
+            dialogStage.setTitle("编辑");
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(primaryStage);
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
 
-            // Set the person into the controller.
+            // Set the Address into the controller.
             ItemEditDialogController controller = loader.getController();
             controller.setDialogStage(dialogStage);
             controller.setAccount(account);
@@ -143,12 +158,6 @@ public class MainApp extends Application {
         }
     }
 
-
-    /**
-     * Returns the main stage.
-     *
-     * @return
-     */
     public Stage getPrimaryStage() {
         return primaryStage;
     }

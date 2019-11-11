@@ -151,9 +151,9 @@ public class ItemEditDialogController {
         } else {
             // Show the error message.
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Information Dialog");
-            alert.setHeaderText("Look, an Information Dialog");
-            alert.setContentText("I have a great message for you!");
+            alert.setTitle("◊¢“‚");
+            alert.setHeaderText("◊¢“‚");
+            alert.setContentText(" ‰»Î¥ÌŒÛ");
 
             alert.showAndWait();
             return false;

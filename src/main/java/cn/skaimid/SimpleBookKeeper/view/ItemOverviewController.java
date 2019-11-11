@@ -24,9 +24,9 @@ public class ItemOverviewController {
     @FXML
     private TableColumn<Account, String> moneyColumn;
     @FXML
-    private TableColumn<Account, String> timeCollumn;
+    private TableColumn<Account, String> timeColumn;
     @FXML
-    private TableColumn<Account, String> descriptionCollumn;
+    private TableColumn<Account, String> descriptionColumn;
 
     @FXML
     private Label sumLabel;
@@ -77,8 +77,8 @@ public class ItemOverviewController {
         // Initialize the table with the two columns.
         tagColumn.setCellValueFactory(cellData -> cellData.getValue().tagProperty());
         moneyColumn.setCellValueFactory(cellData -> cellData.getValue().moneyProperty().asString());
-        timeCollumn.setCellValueFactory(cellDate -> cellDate.getValue().dateProperty().asString());
-        descriptionCollumn.setCellValueFactory(cellData -> cellData.getValue().descriptionProperty());
+        timeColumn.setCellValueFactory(cellDate -> cellDate.getValue().dateProperty().asString());
+        descriptionColumn.setCellValueFactory(cellData -> cellData.getValue().descriptionProperty());
         filterCheckBox.selectedProperty().addListener(((observable, oldValue, newValue) -> {
             if (newValue) {
                 disableFilter(false);
@@ -104,17 +104,9 @@ public class ItemOverviewController {
     }
 
 
-
-    /**
-     * Is called by the main application to give a reference back to itself.
-     *
-     * @param mainApp
-     */
-
-    // TODO func below need to be cleaned
+    // Is called by the main application to give a reference back to itself.
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
-
     }
 
     private void setTableAndSum() {
@@ -185,13 +177,18 @@ public class ItemOverviewController {
 
     @FXML
     private void handleSeeDetail() {
-        System.out.println("233");
+        handleEditItem();
     }
 
 
     @FXML
     private void handleCategoryPieChart() {
         mainApp.showCategoryPieChart();
+    }
+
+    @FXML
+    private void handleIncomeAndExpenditureChart() {
+        mainApp.showIncomeAndExpenditureChart();
     }
 
     /**
@@ -208,9 +205,9 @@ public class ItemOverviewController {
         } else {
             // Nothing selected.
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information Dialog");
-            alert.setHeaderText("Look, an Information Dialog");
-            alert.setContentText("I have a great message for you!");
+            alert.setTitle("注意");
+            alert.setHeaderText("注意");
+            alert.setContentText("请选择一条账目");
 
             alert.showAndWait();
         }
@@ -222,11 +219,11 @@ public class ItemOverviewController {
      */
     @FXML
     private void handleNewItem() {
-        Account tempaccount = new Account();
-        boolean okClicked = mainApp.showItemEditDialog(tempaccount);
+        Account tempAccount = new Account();
+        boolean okClicked = mainApp.showItemEditDialog(tempAccount);
         if (okClicked) {
-            SqlUtil.handleAdd(tempaccount);
-            tempaccount.setId(SqlUtil.getLastId());
+            SqlUtil.handleAdd(tempAccount);
+            tempAccount.setId(SqlUtil.getLastId());
             setTableAndSum();
         }
     }
@@ -254,9 +251,9 @@ public class ItemOverviewController {
             // Nothing selected.
             // Nothing selected.
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information Dialog");
-            alert.setHeaderText("Look, an Information Dialog");
-            alert.setContentText("I have a great message for you!");
+            alert.setTitle("注意");
+            alert.setHeaderText("注意");
+            alert.setContentText("请选择一条账目");
 
             alert.showAndWait();
         }

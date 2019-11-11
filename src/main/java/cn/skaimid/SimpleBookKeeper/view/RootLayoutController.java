@@ -126,4 +126,9 @@ public class RootLayoutController {
     private void handleCategoryPieChart() {
         mainApp.showCategoryPieChart();
     }
+
+    @FXML
+    private void handleIncomeAndExpenditureChart() {
+        mainApp.showIncomeAndExpenditureChart();
+    }
 }

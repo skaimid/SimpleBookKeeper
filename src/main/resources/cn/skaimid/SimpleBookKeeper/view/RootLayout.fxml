@@ -12,21 +12,21 @@
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>
-                <Menu mnemonicParsing="false" text="File">
+                <Menu mnemonicParsing="false" text="文件">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#handleExport" text="Export as .xlsx file"/>
-                        <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Close"/>
+                        <MenuItem mnemonicParsing="false" onAction="#handleExport" text="保存为 .xlsx 文件"/>
+                        <MenuItem mnemonicParsing="false" onAction="#handleExit" text="关闭"/>
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Statistics ">
+                <Menu mnemonicParsing="false" text="统计与分析">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#handleCategoryPieChart"
-                                  text="Show Category Pie Chart"/>
+                        <MenuItem mnemonicParsing="false" onAction="#handleIncomeAndExpenditureChart" text="收支统计饼图"/>
+                        <MenuItem mnemonicParsing="false" onAction="#handleCategoryPieChart" text="支出分类饼图"/>
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Help">
+                <Menu mnemonicParsing="false" text="帮助">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#handleAbout" text="About"/>
+                        <MenuItem mnemonicParsing="false" onAction="#handleAbout" text="关于"/>
                         <MenuItem mnemonicParsing="false" onAction="#handleLicense" text="LICENSE"/>
                     </items>
                 </Menu>
