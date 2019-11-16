@@ -7,7 +7,5 @@ module SimpleBookKeeper.main {
     requires poi;
     requires poi.ooxml;
     exports cn.skaimid.SimpleBookKeeper;
-    exports cn.skaimid.SimpleBookKeeper.view;
-    exports cn.skaimid.SimpleBookKeeper.util;
-    exports cn.skaimid.SimpleBookKeeper.model;
+    opens cn.skaimid.SimpleBookKeeper.view to javafx.fxml;
 }
