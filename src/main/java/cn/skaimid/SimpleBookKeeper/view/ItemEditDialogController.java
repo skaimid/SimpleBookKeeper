@@ -10,20 +10,20 @@ import javafx.stage.Stage;
 
 public class ItemEditDialogController {
     @FXML
-    private ChoiceBox<String> sideChoiceField;
+    public ChoiceBox<String> sideChoiceField;
 
 
     @FXML
-    private TextField moneyField;
+    public TextField moneyField;
 
     @FXML
-    private TextArea descriptionField;
+    public TextArea descriptionField;
 
     @FXML
-    private DatePicker datePicker;
+    public DatePicker datePicker;
 
     @FXML
-    private ChoiceBox<String> tagChoiceField;
+    public ChoiceBox<String> tagChoiceField;
 
     private Stage dialogStage;
     private Account account;
@@ -34,7 +34,7 @@ public class ItemEditDialogController {
      * after the fxml file has been loaded.
      */
     @FXML
-    private void initialize() {
+    public void initialize() {
         ObservableList<String> sideOption = FXCollections.observableArrayList();
         sideOption.add("支出");
         sideOption.add("收入");
@@ -105,7 +105,7 @@ public class ItemEditDialogController {
      * Called when the user clicks ok.
      */
     @FXML
-    private void handleOk() {
+    public void handleOk() {
         if (isInputValid()) {
             if (sideChoiceField.getValue().equals("收入")) {
                 account.setMoney(Math.abs(Double.parseDouble(moneyField.getText())));
@@ -128,7 +128,7 @@ public class ItemEditDialogController {
      * Called when the user clicks cancel.
      */
     @FXML
-    private void handleCancel() {
+    public void handleCancel() {
         dialogStage.close();
     }
 

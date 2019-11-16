@@ -19,34 +19,34 @@ public class ItemOverviewController {
     private ObservableList<Account> accountData;
 
     @FXML
-    private TableView<Account> accountTable;
+    public TableView<Account> accountTable;
 
     @FXML
-    private TableColumn<Account, String> tagColumn;
+    public TableColumn<Account, String> tagColumn;
     @FXML
-    private TableColumn<Account, String> moneyColumn;
+    public TableColumn<Account, String> moneyColumn;
     @FXML
-    private TableColumn<Account, String> timeColumn;
+    public TableColumn<Account, String> timeColumn;
     @FXML
-    private TableColumn<Account, String> descriptionColumn;
+    public TableColumn<Account, String> descriptionColumn;
 
     @FXML
-    private Label sumLabel;
+    public Label sumLabel;
 
     @FXML
-    private CheckBox filterCheckBox;
+    public CheckBox filterCheckBox;
 
     @FXML
-    private DatePicker startDatePicker;
+    public DatePicker startDatePicker;
 
     @FXML
-    private DatePicker endDatePicker;
+    public DatePicker endDatePicker;
 
     @FXML
-    private ChoiceBox<String> categoryCheckBox;
+    public ChoiceBox<String> categoryCheckBox;
 
     @FXML
-    private Button filterConfirmButton;
+    public Button filterConfirmButton;
 
     // Reference to the main application.
     private MainApp mainApp;
@@ -157,7 +157,7 @@ public class ItemOverviewController {
 //    }
 
     @FXML
-    private void handleFilter() {
+    public void handleFilter() {
         if (filterCheckBox.isSelected()) {
             if (categoryCheckBox.getValue().equals("È«²¿")) {
                 accountData = SqlUtil.handleSearch("select * from account " +
@@ -177,7 +177,7 @@ public class ItemOverviewController {
     }
 
     @FXML
-    private void handleReset() {
+    public void handleReset() {
         filterCheckBox.setSelected(false);
         initializeFilter();
         accountData = SqlUtil.handleSearch("select * from account");
@@ -197,18 +197,18 @@ public class ItemOverviewController {
     }
 
     @FXML
-    private void handleSeeDetail() {
+    public void handleSeeDetail() {
         handleEditItem();
     }
 
 
     @FXML
-    private void handleCategoryPieChart() {
+    public void handleCategoryPieChart() {
         mainApp.showCategoryPieChart();
     }
 
     @FXML
-    private void handleIncomeAndExpenditureChart() {
+    public void handleIncomeAndExpenditureChart() {
         mainApp.showIncomeAndExpenditureChart();
     }
 
@@ -216,7 +216,7 @@ public class ItemOverviewController {
      * Called when the user clicks on the delete button.
      */
     @FXML
-    private void handleDeleteItem() {
+    public void handleDeleteItem() {
         int selectedIndex = accountTable.getSelectionModel().getSelectedIndex();
         if (selectedIndex >= 0) {
             int id = accountTable.getSelectionModel().selectedItemProperty().getValue().getId();
@@ -238,7 +238,7 @@ public class ItemOverviewController {
      * details for a new person.
      */
     @FXML
-    private void handleNewItem() {
+    public void handleNewItem() {
         Account tempAccount = new Account();
         boolean okClicked = mainApp.showItemEditDialog(tempAccount);
         if (okClicked) {
@@ -253,7 +253,7 @@ public class ItemOverviewController {
      * details for the selected person.
      */
     @FXML
-    private void handleEditItem() {
+    public void handleEditItem() {
         Account selectedAccount = accountTable.getSelectionModel().getSelectedItem();
         if (selectedAccount != null) {
             int tempId = selectedAccount.getId();

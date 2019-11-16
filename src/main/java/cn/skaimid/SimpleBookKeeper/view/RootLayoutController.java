@@ -25,7 +25,7 @@ public class RootLayoutController {
     }
 
     @FXML
-    private void handleExport() {
+    public void handleExport() {
         FileChooser fileChooser = new FileChooser();
 
         FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter(
@@ -81,12 +81,12 @@ public class RootLayoutController {
     }
 
     @FXML
-    private void handleExit() {
+    public void handleExit() {
         System.exit(0);
     }
 
     @FXML
-    private void handleAbout() {
+    public void handleAbout() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Simple BookKeeper");
         alert.setHeaderText("About");
@@ -100,7 +100,7 @@ public class RootLayoutController {
     }
 
     @FXML
-    private void handleLicense() {
+    public void handleLicense() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Simple BookKeeper");
         alert.setHeaderText("License");
@@ -123,12 +123,12 @@ public class RootLayoutController {
     }
 
     @FXML
-    private void handleCategoryPieChart() {
+    public void handleCategoryPieChart() {
         mainApp.showCategoryPieChart();
     }
 
     @FXML
-    private void handleIncomeAndExpenditureChart() {
+    public void handleIncomeAndExpenditureChart() {
         mainApp.showIncomeAndExpenditureChart();
     }
 }
