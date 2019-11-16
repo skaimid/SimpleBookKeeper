@@ -8,22 +8,25 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class ItemEditDialogController {
     @FXML
-    public ChoiceBox<String> sideChoiceField;
+    private ChoiceBox<String> sideChoiceField;
 
 
     @FXML
-    public TextField moneyField;
+    private TextField moneyField;
 
     @FXML
-    public TextArea descriptionField;
+    private TextArea descriptionField;
 
     @FXML
-    public DatePicker datePicker;
+    private DatePicker datePicker;
 
     @FXML
-    public ChoiceBox<String> tagChoiceField;
+    private ChoiceBox<String> tagChoiceField;
 
     private Stage dialogStage;
     private Account account;
@@ -34,7 +37,7 @@ public class ItemEditDialogController {
      * after the fxml file has been loaded.
      */
     @FXML
-    public void initialize() {
+    private void initialize() {
         ObservableList<String> sideOption = FXCollections.observableArrayList();
         sideOption.add("支出");
         sideOption.add("收入");
@@ -105,7 +108,7 @@ public class ItemEditDialogController {
      * Called when the user clicks ok.
      */
     @FXML
-    public void handleOk() {
+    private void handleOk() {
         if (isInputValid()) {
             if (sideChoiceField.getValue().equals("收入")) {
                 account.setMoney(Math.abs(Double.parseDouble(moneyField.getText())));
@@ -128,7 +131,7 @@ public class ItemEditDialogController {
      * Called when the user clicks cancel.
      */
     @FXML
-    public void handleCancel() {
+    private void handleCancel() {
         dialogStage.close();
     }
 
@@ -141,8 +144,13 @@ public class ItemEditDialogController {
         String errorMsg = "";
 
         if (moneyField.getText() == null || moneyField.getText().length() == 0) {
-            errorMsg += "No valid money";
+            errorMsg += "请输入金额";
+        }else{
+            Pattern pattern = Pattern.compile("^[0-9]*$");
+            Matcher matcher = pattern.matcher(moneyField.getText());
+            errorMsg += "金额格式错误";
         }
+
 
         //TODO other valid check is not finished
 
@@ -152,8 +160,8 @@ public class ItemEditDialogController {
             // Show the error message.
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("注意");
-            alert.setHeaderText("注意");
-            alert.setContentText("输入错误");
+            alert.setHeaderText("出错了");
+            alert.setContentText(errorMsg);
 
             alert.showAndWait();
             return false;

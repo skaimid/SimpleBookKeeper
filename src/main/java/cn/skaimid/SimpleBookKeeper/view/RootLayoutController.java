@@ -81,12 +81,12 @@ public class RootLayoutController {
     }
 
     @FXML
-    public void handleExit() {
+    private void handleExit() {
         System.exit(0);
     }
 
     @FXML
-    public void handleAbout() {
+    private void handleAbout() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Simple BookKeeper");
         alert.setHeaderText("About");
@@ -100,7 +100,7 @@ public class RootLayoutController {
     }
 
     @FXML
-    public void handleLicense() {
+    private void handleLicense() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Simple BookKeeper");
         alert.setHeaderText("License");
@@ -123,12 +123,12 @@ public class RootLayoutController {
     }
 
     @FXML
-    public void handleCategoryPieChart() {
+    private void handleCategoryPieChart() {
         mainApp.showCategoryPieChart();
     }
 
     @FXML
-    public void handleIncomeAndExpenditureChart() {
+    private void handleIncomeAndExpenditureChart() {
         mainApp.showIncomeAndExpenditureChart();
     }
 }

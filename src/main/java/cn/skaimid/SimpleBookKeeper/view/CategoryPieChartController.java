@@ -12,11 +12,11 @@ import java.util.stream.IntStream;
 public class CategoryPieChartController {
 
     @FXML
-    public PieChart pieChart;
+    private PieChart pieChart;
 
 
     @FXML
-    public void initialize() {
+    private void initialize() {
         Queue<Account> accountQueue = SqlUtil.handleTraversing();
         Double[] categoryData = IntStream.range(0, 11).mapToObj(i -> 0.0).toArray(Double[]::new);
         Double sum = 0.0;

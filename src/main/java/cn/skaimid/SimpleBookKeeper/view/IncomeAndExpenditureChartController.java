@@ -13,11 +13,11 @@ import static java.lang.Math.abs;
 public class IncomeAndExpenditureChartController {
 
     @FXML
-    public PieChart pieChart;
+    private PieChart pieChart;
 
 
     @FXML
-    public void initialize() {
+    private void initialize() {
         Queue<Account> accountQueue = SqlUtil.handleTraversing();
         Double income = 0.0, expenditure = 0.0;
         Double sum = 0.0;
