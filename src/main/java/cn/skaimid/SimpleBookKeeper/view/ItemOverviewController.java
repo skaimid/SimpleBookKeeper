@@ -89,11 +89,17 @@ public class ItemOverviewController {
         filterCheckBox.selectedProperty().addListener(((observable, oldValue, newValue) -> {
             if (newValue) {
                 disableFilter(false);
+                startDatePicker.setValue(LocalDate.now());
+                endDatePicker.setValue(LocalDate.now());
 
             } else {
                 disableFilter(true);
+                handleFilter();
             }
         }));
+        startDatePicker.valueProperty().addListener(observable -> handleFilter());
+        endDatePicker.valueProperty().addListener(observable -> handleFilter());
+        categoryCheckBox.valueProperty().addListener(observable -> handleFilter());
 
 
         handleFilter();
@@ -180,7 +186,7 @@ public class ItemOverviewController {
     public void handleReset() {
         filterCheckBox.setSelected(false);
         initializeFilter();
-        accountData = SqlUtil.handleSearch("select * from account");
+        accountData = SqlUtil.handleSearch("select * from account order by time asc");
         setTableAndSum();
     }
 
@@ -192,8 +198,8 @@ public class ItemOverviewController {
         }
         categoryCheckBox.setItems(tagOptions);
         categoryCheckBox.setValue("È«²¿");
-        startDatePicker.setValue(LocalDate.now());
-        endDatePicker.setValue(LocalDate.now());
+        startDatePicker.setValue(null);
+        endDatePicker.setValue(null);
     }
 
     @FXML

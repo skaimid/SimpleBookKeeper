@@ -11,6 +11,37 @@ import java.util.Queue;
 
 public class SqlUtil {
 
+    public static void init(){
+        Connection connection = null;
+        try {
+            // create a database connection
+            connection = DriverManager.getConnection("jdbc:sqlite:account.db");
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);  // set timeout to 30 sec.
+
+            statement.executeUpdate("create table if not exists account " +
+                    "(id integer primary key autoincrement not null, " +
+                    "money real default 0, " +
+                    "tag integer default 0," +
+                    "description text, " +
+                    "time text, " +
+                    "last_update_time text);");
+
+        } catch (SQLException e) {
+            // if the error message is "out of memory",
+            // it probably means no database file is found
+            System.err.println(e.getMessage());
+        } finally {
+            try {
+                if (connection != null)
+                    connection.close();
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+    }
+
 
     /**
      * for xlsx export function
