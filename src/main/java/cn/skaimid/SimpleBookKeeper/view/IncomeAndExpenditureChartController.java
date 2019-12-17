@@ -10,6 +10,10 @@ import java.util.Queue;
 
 import static java.lang.Math.abs;
 
+/**
+ * show pie chart
+ * about Income And Expend
+ */
 public class IncomeAndExpenditureChartController {
 
     @FXML

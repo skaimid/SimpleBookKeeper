@@ -5,6 +5,10 @@ import javafx.beans.binding.StringBinding;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * enum class for classify
+ */
 public enum Tags {
     ADD(-1, "收入"),
     OTHERS(0, "其他"),

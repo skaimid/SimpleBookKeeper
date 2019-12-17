@@ -9,8 +9,19 @@ import java.sql.*;
 import java.util.LinkedList;
 import java.util.Queue;
 
+/**
+ * method class
+ * all basic methods about database are written here
+ *
+ */
 public class SqlUtil {
 
+    /**
+     * check if database exist or not
+     * if not exist
+     * then create
+     *
+     */
     public static void init(){
         Connection connection = null;
         try {
@@ -28,8 +39,6 @@ public class SqlUtil {
                     "last_update_time text);");
 
         } catch (SQLException e) {
-            // if the error message is "out of memory",
-            // it probably means no database file is found
             System.err.println(e.getMessage());
         } finally {
             try {
@@ -149,6 +158,10 @@ public class SqlUtil {
         }
     }
 
+    /**
+     * Insert a account
+     * @param account to be inserted
+     */
     public static void handleAdd(Account account) {
         Connection connection = null;
         try {
@@ -179,6 +192,10 @@ public class SqlUtil {
         }
     }
 
+    /**
+     *
+     * @return the latest Item's id that inserted into the database
+     */
     public static int getLastId() {
         Connection connection = null;
         try {

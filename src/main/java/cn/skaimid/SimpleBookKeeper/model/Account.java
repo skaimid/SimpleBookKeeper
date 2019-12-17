@@ -7,6 +7,7 @@ import javafx.beans.property.*;
 
 /**
  * Model class for a account.
+ * data class
  *
  * @author Skaimid
  */

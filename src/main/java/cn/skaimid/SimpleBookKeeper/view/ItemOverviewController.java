@@ -14,7 +14,10 @@ import javafx.scene.control.*;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 
-
+/**
+ * handle the mainly view logic of the app
+ *
+ */
 public class ItemOverviewController {
     private ObservableList<Account> accountData;
 
@@ -68,7 +71,7 @@ public class ItemOverviewController {
     private Alert initialAlert;
 
     @FXML
-    private void initialize() {
+    private void initialize() { //这个地方开多线程是因为如果不另开窗口，初始化很卡，体验不好
         // set Table
         initialAlert = new Alert(Alert.AlertType.INFORMATION);
         initialAlert.setTitle("加载中");

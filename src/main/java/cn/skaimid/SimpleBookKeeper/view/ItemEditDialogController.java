@@ -11,6 +11,9 @@ import javafx.stage.Stage;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * handle insert and modify
+ */
 public class ItemEditDialogController {
     @FXML
     private ChoiceBox<String> sideChoiceField;
@@ -146,10 +149,13 @@ public class ItemEditDialogController {
         if (moneyField.getText() == null || moneyField.getText().length() == 0) {
             errorMsg += "请输入金额";
         } else {
-            Pattern pattern = Pattern.compile("^[0-9]*$");
+            Pattern pattern = Pattern.compile("^(-?\\d+)(\\.\\d+)?");
             Matcher matcher = pattern.matcher(moneyField.getText());
             if (!matcher.find()) {
                 errorMsg += "金额格式错误";
+            }
+            if(Double.parseDouble(moneyField.getText()) == 0){
+                errorMsg += "金额无效";
             }
         }
 

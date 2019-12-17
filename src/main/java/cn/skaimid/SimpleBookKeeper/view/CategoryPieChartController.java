@@ -9,6 +9,11 @@ import javafx.scene.chart.PieChart;
 import java.util.Queue;
 import java.util.stream.IntStream;
 
+/**
+ * show pie chart about category
+ * expend only
+ *
+ */
 public class CategoryPieChartController {
 
     @FXML
