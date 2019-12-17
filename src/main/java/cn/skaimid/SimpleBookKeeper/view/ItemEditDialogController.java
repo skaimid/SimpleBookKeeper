@@ -145,10 +145,12 @@ public class ItemEditDialogController {
 
         if (moneyField.getText() == null || moneyField.getText().length() == 0) {
             errorMsg += "请输入金额";
-        }else{
+        } else {
             Pattern pattern = Pattern.compile("^[0-9]*$");
             Matcher matcher = pattern.matcher(moneyField.getText());
-            errorMsg += "金额格式错误";
+            if (!matcher.find()) {
+                errorMsg += "金额格式错误";
+            }
         }
 
 

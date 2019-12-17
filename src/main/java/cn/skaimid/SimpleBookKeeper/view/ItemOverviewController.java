@@ -167,12 +167,12 @@ public class ItemOverviewController {
         if (filterCheckBox.isSelected()) {
             if (categoryCheckBox.getValue().equals("È«²¿")) {
                 accountData = SqlUtil.handleSearch("select * from account " +
-                        "where time >= '" + SqlTimeUtil.formate(startDatePicker.getValue()) + "'" +
-                        "and time <= '" + SqlTimeUtil.formate(endDatePicker.getValue()) + "' order by time asc");
+                        "where time >= '" + SqlTimeUtil.format(startDatePicker.getValue()) + "'" +
+                        "and time <= '" + SqlTimeUtil.format(endDatePicker.getValue()) + "' order by time asc");
             } else {
                 accountData = SqlUtil.handleSearch("select * from account " +
-                        "where time >= '" + SqlTimeUtil.formate(startDatePicker.getValue()) + "'" +
-                        "and time <= '" + SqlTimeUtil.formate(endDatePicker.getValue()) + "' " +
+                        "where time >= '" + SqlTimeUtil.format(startDatePicker.getValue()) + "'" +
+                        "and time <= '" + SqlTimeUtil.format(endDatePicker.getValue()) + "' " +
                         "and tag == '" + Tags.getCodeByTagName(categoryCheckBox.getValue()) + "' order by time asc");
             }
         } else {

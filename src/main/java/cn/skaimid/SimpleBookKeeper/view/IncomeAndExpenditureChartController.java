@@ -30,7 +30,9 @@ public class IncomeAndExpenditureChartController {
                 income += tempAccount.getMoney();
             }
         }
-        pieChart.getData().add(new PieChart.Data("收入", income / (income + expenditure) * 100));
-        pieChart.getData().add(new PieChart.Data("支出", expenditure / (income + expenditure) * 100));
+        if (income + expenditure != 0) {
+            pieChart.getData().add(new PieChart.Data("收入", income / (income + expenditure) * 100));
+            pieChart.getData().add(new PieChart.Data("支出", expenditure / (income + expenditure) * 100));
+        }
     }
 }

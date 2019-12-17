@@ -28,9 +28,10 @@ public class CategoryPieChartController {
                 sum += tempAccount.getMoney();
             }
         }
-        for (int i = 0; i < 11; i++) {
-            pieChart.getData().add(new PieChart.Data(Tags.getTagNameByCode(i), (categoryData[i] / sum) * 100));
+        if (sum != 0) {
+            for (int i = 0; i < 11; i++) {
+                pieChart.getData().add(new PieChart.Data(Tags.getTagNameByCode(i), (categoryData[i] / sum) * 100));
+            }
         }
-
     }
 }

@@ -159,7 +159,7 @@ public class SqlUtil {
 
             statement.executeUpdate("insert into account(id,money, tag, description, time, last_update_time)" +
                     "values (null,'" + account.getMoney() + "','" + Tags.getCodeByTagName(account.getTag()) + "'" +
-                    ",'" + account.getDescription() + "','" + SqlTimeUtil.formate(account.getDate()) + "',DATETIME('now'))");
+                    ",'" + account.getDescription() + "','" + SqlTimeUtil.format(account.getDate()) + "',DATETIME('now'))");
 
 
         } catch (SQLException e) {

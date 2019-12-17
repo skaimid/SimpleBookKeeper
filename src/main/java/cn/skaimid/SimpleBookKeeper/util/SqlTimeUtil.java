@@ -10,7 +10,7 @@ public class SqlTimeUtil {
     private static final DateTimeFormatter DATE_FORMATTER =
             DateTimeFormatter.ofPattern(DATE_PATTERN);
 
-    public static String formate(LocalDate date) {
+    public static String format(LocalDate date) {
         if (date == null) {
             return null;
         }
