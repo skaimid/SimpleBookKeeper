@@ -9,7 +9,7 @@ plugins {
 group 'cn.skaimid'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.11
+sourceCompatibility = 1.13
 
 repositories {
     mavenCentral()
